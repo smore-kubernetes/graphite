@@ -2,20 +2,19 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
   name: graphite-ingress
   namespace: default
 spec:
   ingressClassName: nginx
   rules:
-  - http:
+  - host: columbo
+    http:
       paths:
-      - backend:
-          service:
-            name: graphite
-            port:
-              number: 80
-        path: /graphite
-        pathType: Prefix
-status:
-  loadBalancer: {}
+        - pathType: Prefix
+          path: /graphite(/|$)(.*)
+          backend:
+            service:
+              name: graphite
+              port:
+                number: 80
