@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: graphite
+  labels:
+    type: local
+spec:
+  storageClassName: longhorn
+  capacity:
+    storage: 128Gi
+  volumeMode: Block
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  local:
+    path: /dev/mapper/data-graphite
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - columbo
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: graphite-config
+  labels:
+    type: local
+spec:
+  storageClassName: longhorn
+  capacity:
+    storage: 128Mi
+  volumeMode: Block
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  local:
+    path: /dev/mapper/data-graphite-config
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - columbo
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: statsd-config
+  labels:
+    type: local
+spec:
+  storageClassName: longhorn
+  capacity:
+    storage: 128Mi
+  volumeMode: Block
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  local:
+    path: /dev/mapper/data-statsd-config
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - columbo
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: graphite-pv-claim
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: graphite-config-pv-claim
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: statsd-config-pv-claim
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+

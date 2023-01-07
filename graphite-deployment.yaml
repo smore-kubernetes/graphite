@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graphite
+  labels:
+    app.kubernetes.io/name: graphite
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: graphite
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: graphite
+    spec:
+      containers:
+      - image: graphiteapp/graphite-statsd
+        name: graphite
+        ports:
+        - containerPort: 80
+          name: nginx
+        - containerPort: 2003
+          name: cbn-rcv-text
+        - containerPort: 2004
+          name: cbn-rcv-pickle
+        - containerPort: 2023
+          name: cbn-agg-text
+        - containerPort: 2024
+          name: cbn-agg-pickle
+        - containerPort: 8080
+          name: gunicorn
+        - containerPort: 8125
+          protocol: UDP
+          name: statsd
+        - containerPort: 8126
+          name: statsd-admin
+        volumeMounts:
+        - name: graphite-persistent-storage
+          mountPath: /opt/graphite/storage
+        - name: graphite-config-persistent-storage
+          mountPath: /opt/graphite/conf
+        - name: statsd-config-persistent-storage
+          mountPath: /opt/statsd/config
+      volumes:
+      - name: graphite-persistent-storage
+        persistentVolumeClaim:
+          claimName: graphite-pv-claim
+      - name: graphite-config-persistent-storage
+        persistentVolumeClaim:
+          claimName: graphite-config-pv-claim
+      - name: statsd-config-persistent-storage
+        persistentVolumeClaim:
+          claimName: statsd-config-pv-claim
