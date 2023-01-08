@@ -4,8 +4,11 @@ metadata:
   name: graphite
 spec:
   type: LoadBalancer
+  sessionAffinity: None
+  selector:
+    app: graphite
   ports:
-    - port: 80
+    - port: 81
       name: graphite-ui
       protocol: TCP
       targetPort: nginx
@@ -33,8 +36,6 @@ spec:
       name: gunicorn
       protocol: TCP
       targetPort: gunicorn
-  selector:
-    app.kubernetes.io/name: graphite
 ---
 apiVersion: v1
 kind: Service
@@ -42,9 +43,11 @@ metadata:
   name: graphite-udp
 spec:
   type: LoadBalancer
+  sessionAffinity: None
+  selector:
+    app: graphite
   ports:
     - port: 8125
       name: statsd
       protocol: UDP
-      port: 8125
       targetPort: statsd
