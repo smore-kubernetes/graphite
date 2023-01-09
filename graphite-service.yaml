@@ -6,7 +6,7 @@ spec:
   type: LoadBalancer
   sessionAffinity: None
   selector:
-    app: graphite
+    app.kubernetes.io/name: graphite
   ports:
     - port: 81
       name: graphite-ui
