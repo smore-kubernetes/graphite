@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: graphite
 spec:
-  type: LoadBalancer
-  sessionAffinity: None
   selector:
     app.kubernetes.io/name: graphite
   ports:
@@ -36,17 +34,6 @@ spec:
       name: gunicorn
       protocol: TCP
       targetPort: gunicorn
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: graphite-udp
-spec:
-  type: LoadBalancer
-  sessionAffinity: None
-  selector:
-    app: graphite
-  ports:
     - port: 8125
       name: statsd
       protocol: UDP
