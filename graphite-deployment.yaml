@@ -15,13 +15,13 @@ spec:
       labels:
         app.kubernetes.io/name: graphite
     spec:
-      nodeName: columbo
+      nodeName: k3os-6802
       containers:
       - image: graphiteapp/graphite-statsd
         name: graphite
         ports:
         - containerPort: 80
-          name: nginx
+          name: web
         - containerPort: 2003
           name: cbn-rcv-text
         - containerPort: 2004
@@ -47,10 +47,10 @@ spec:
       volumes:
       - name: graphite-persistent-storage
         persistentVolumeClaim:
-          claimName: graphite-pv-claim
+          claimName: graphite-pvc
       - name: graphite-config-persistent-storage
         persistentVolumeClaim:
-          claimName: graphite-config-pv-claim
+          claimName: graphite-config-pvc
       - name: statsd-config-persistent-storage
         persistentVolumeClaim:
-          claimName: statsd-config-pv-claim
+          claimName: statsd-config-pvc
