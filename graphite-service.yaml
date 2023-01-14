@@ -6,10 +6,10 @@ spec:
   selector:
     app.kubernetes.io/name: graphite
   ports:
-    - port: 81
+    - port: 80
       name: graphite-ui
       protocol: TCP
-      targetPort: nginx
+      targetPort: web
     - port: 2003
       name: cbn-rcv-text
       protocol: TCP
