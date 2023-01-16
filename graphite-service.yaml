@@ -10,31 +10,48 @@ spec:
       name: graphite-ui
       protocol: TCP
       targetPort: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: graphite-internal
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: graphite
+  ports:
     - port: 2003
       name: cbn-rcv-text
       protocol: TCP
       targetPort: cbn-rcv-text
+      nodePort: 32003
     - port: 2004
       name: cbn-rcv-pickle
       protocol: TCP
       targetPort: cbn-rcv-pickle
+      nodePort: 32004
     - port: 2023
       name: cbn-agg-text
       protocol: TCP
       targetPort: cbn-agg-text
+      nodePort: 32023
     - port: 2024
       name: cbn-agg-pickle
       protocol: TCP
       targetPort: cbn-agg-pickle
+      nodePort: 32024
     - port: 8126
       name: statsd-admin
       protocol: TCP
       targetPort: statsd-admin
+      nodePort: 31126
     - port: 8080
       name: gunicorn
       protocol: TCP
       targetPort: gunicorn
+      nodePort: 31080
     - port: 8125
       name: statsd
       protocol: UDP
       targetPort: statsd
+      nodePort: 31125
