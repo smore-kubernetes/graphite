@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: graphite
   labels:
-    app.kubernetes.io/name: graphite
+    app: graphite
 spec:
   selector:
     matchLabels:
@@ -19,6 +19,11 @@ spec:
       containers:
       - image: graphiteapp/graphite-statsd
         name: graphite
+        env:
+          - name: GRAPHITE_URL_ROOT
+            value: "/graphite"
+          - name: COLLECTD
+            value: "1"
         ports:
         - containerPort: 80
           name: web
